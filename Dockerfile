@@ -6,4 +6,7 @@ RUN apt-get -y update && \
 
 COPY image/etc/samba/smb.conf /etc/samba/smb.conf
 
-CMD service smbd restart
+COPY image/usr/bin/run.sh /usr/bin/run.sh
+RUN chmod +x /usr/bin/run.sh
+
+ENTRYPOINT /usr/bin/run.sh
