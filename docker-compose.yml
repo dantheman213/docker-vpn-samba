@@ -1,12 +1,18 @@
 version: '3'
 services:
   docker-vpn-smb:
+    container_name: samba
     build: .
-    ports:
-      - 137:137/udp
-      - 138:138/udp
-      - 139:139
-      - 445:445
     volumes:
       - ${LOCAL_SHARE_PATH}:/samba
+    networks:
+      dvs:
+          ipv4_address: 172.28.28.28
     restart: "always"
+
+networks:
+  dvs:
+      ipam:
+          driver: default
+          config:
+              - subnet: 172.28.28.0/24
