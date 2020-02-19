@@ -8,5 +8,5 @@ services:
       - 139:139
       - 445:445
     volumes:
-      - ${LOCAL_SHARE_PATH}:/media
+      - ${LOCAL_SHARE_PATH}:/samba
     restart: "always"
