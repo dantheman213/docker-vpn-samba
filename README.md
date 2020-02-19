@@ -1,10 +1,10 @@
 # docker-vpn-smb
 
-TODO 
+Turn-key Samba (SMB) file share and VPN
 
 ## Getting Started
 
-Example is a fresh Ubuntu 18.04 LTS server in the cloud.
+Setup a secure file share behind VPN in minutes. Example below is a fresh Ubuntu 18.04 LTS server in the cloud.
 
 ### Prereq
 
