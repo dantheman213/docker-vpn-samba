@@ -16,13 +16,19 @@ ufw enable
 
 ### Setup
 
-```
-echo "DVS_LOCAL_VPN_CONFIG_PATH=/etc/openvpn" >> /etc/environment
-echo "DVS_LOCAL_VPN_CREDS_PATH=/etc/vpn/credentials" >> /etc/environment
-echo "DVS_LOCAL_SHARE_PATH=/samba" >> /etc/environment
-echo "DVS_VPN_HOST=vpn.mydomain.com" >> /etc/environment
-source /etc/environment
+Set these values custom to your preference on your new server.
 
+```
+echo "export DVS_LOCAL_VPN_CONFIG_PATH=/etc/openvpn" >> /etc/environment
+echo "export DVS_LOCAL_VPN_CREDS_PATH=/etc/vpn/credentials" >> /etc/environment
+echo "export DVS_LOCAL_SHARE_PATH=/samba" >> /etc/environment
+echo "export DVS_VPN_HOST=vpn.mydomain.com" >> /etc/environment
+source /etc/environment
+```
+
+Now run this code one at a time to continue setup:
+
+```
 [ ! -d $DVS_LOCAL_SHARE_PATH ] && mkdir -p $DVS_LOCAL_SHARE_PATH
 chmod 777 $DVS_LOCAL_SHARE_PATH
 
