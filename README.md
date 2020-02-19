@@ -17,22 +17,23 @@ ufw enable
 ### Setup
 
 ```
-export LOCAL_VPN_CONFIG_PATH=/etc/openvpn
-export LOCAL_VPN_CREDS_PATH=/etc/vpn/credentials
-export LOCAL_SHARE_PATH=/samba
-export VPN_HOST=vpn.mydomain.com
+echo "DVS_LOCAL_VPN_CONFIG_PATH=/etc/openvpn" >> /etc/environment
+echo "DVS_LOCAL_VPN_CREDS_PATH=/etc/vpn/credentials" >> /etc/environment
+echo "DVS_LOCAL_SHARE_PATH=/samba" >> /etc/environment
+echo "DVS_VPN_HOST=vpn.mydomain.com" >> /etc/environment
+source /etc/environment
 
-[ ! -d $LOCAL_SHARE_PATH ] && mkdir -p $LOCAL_SHARE_PATH
-chmod 777 $LOCAL_SHARE_PATH
+[ ! -d $DVS_LOCAL_SHARE_PATH ] && mkdir -p $DVS_LOCAL_SHARE_PATH
+chmod 777 $DVS_LOCAL_SHARE_PATH
 
-[ ! -d $LOCAL_VPN_CONFIG_PATH ] && mkdir -p $LOCAL_VPN_CONFIG_PATH
-docker-compose run --rm openvpn ovpn_genconfig -u udp://$VPN_HOST
+[ ! -d $DVS_LOCAL_VPN_CONFIG_PATH ] && mkdir -p $DVS_LOCAL_VPN_CONFIG_PATH
+docker-compose run --rm openvpn ovpn_genconfig -u udp://$DVS_VPN_HOST
 docker-compose run --rm openvpn ovpn_initpki
 ```
 
 1. Enter a passphrase, make sure it's a long secure string, and keep it safe
 
-2. You will then be prompted to enter the server host, enter $VPN_HOST value above
+2. You will then be prompted to enter the server host, enter $DVS_VPN_HOST value above
 
 3. /etc/openvpn/pki/private/ca.key enter passphrase same as #1
 
@@ -44,7 +45,7 @@ docker-compose up --build -d
 ### Configure Authentication
 
 ```
-[ ! -d $LOCAL_VPN_CREDS_PATH ] && mkdir -p $LOCAL_VPN_CREDS_PATH
+[ ! -d $DVS_LOCAL_VPN_CREDS_PATH ] && mkdir -p $DVS_LOCAL_VPN_CREDS_PATH
 ```
 
 For every user (client) you want to give a certificate to run:
@@ -57,7 +58,7 @@ docker-compose run --rm openvpn easyrsa build-client-full $CLIENTNAME
 1. You will be asked for key to create user, create new key not the same as CA passphrase
 
 ```
-docker-compose run --rm openvpn ovpn_getclient $CLIENTNAME > $LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
+docker-compose run --rm openvpn ovpn_getclient $CLIENTNAME > $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
 ```
 
 ### Connect

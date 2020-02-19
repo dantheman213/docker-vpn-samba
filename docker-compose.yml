@@ -10,14 +10,14 @@ services:
     networks:
       - dvs
     volumes:
-      - ${LOCAL_VPN_CONFIG_PATH}:/etc/openvpn
+      - ${DVS_LOCAL_VPN_CONFIG_PATH}:/etc/openvpn
     restart: always
 
   docker-vpn-smb:
     container_name: samba
     build: .
     volumes:
-      - ${LOCAL_SHARE_PATH}:/samba
+      - ${DVS_LOCAL_SHARE_PATH}:/samba
     networks:
       dvs:
           ipv4_address: 172.28.28.28
