@@ -91,8 +91,10 @@ Windows and MacOS provide built-in mechanisms for connecting to Samba file share
 #### Credentials
 
 Host: `\\172.28.28.28\vault`
-Username guest (or any username really)
-Password <empty>
+
+Username: guest (or any username really)
+
+Password: <empty>
 
 ### Disconnect
 
