@@ -74,6 +74,9 @@ docker-compose run --rm openvpn easyrsa build-client-full $CLIENTNAME
 
 ```
 docker-compose run --rm openvpn ovpn_getclient $CLIENTNAME > $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
+sed -i '/redirect-gateway def1/d' $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
+echo "route-nopull" >> $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
+echo "route 172.28.28.28 255.255.255.255" >> $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
 ```
 
 ### Connect Client To VPN Server
@@ -95,10 +98,6 @@ Host: `\\172.28.28.28\vault`
 Username: guest (or any username really)
 
 Password: <empty>
-
-### Disconnect
-
-The VPN currently sends all traffic over it so disconnect after using the Samba file share in order to resume normal Internet activities.
 
 ## Reference
 
