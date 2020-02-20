@@ -9,9 +9,17 @@ Setup a secure file share behind VPN in minutes. Example below is a fresh Ubuntu
 ### Prereq
 
 ```
+apt-get update
+apt-get upgrade -y
+apt-get install -y docker docker-compose
+
 ufw default deny incoming
-ufw allow 22,1194
+ufw allow 22
+ufw allow 1194/udp
 ufw enable
+
+git clone https://github.com/dantheman213/docker-vpn-samba
+cd docker-vpn-samba
 ```
 
 ### Setup
@@ -41,7 +49,7 @@ docker-compose run --rm openvpn ovpn_initpki
 
 2. You will then be prompted to enter the server host, enter $DVS_VPN_HOST value above
 
-3. /etc/openvpn/pki/private/ca.key enter passphrase same as #1
+3. Provide the passphrase from #1 in (2) prompts
 
 ### Start Containers
 ```
@@ -57,23 +65,42 @@ docker-compose up --build -d
 For every user (client) you want to give a certificate to run:
 
 ```
-export CLIENTNAME="your_client_name"
+export CLIENTNAME="bob.sampleton"
 docker-compose run --rm openvpn easyrsa build-client-full $CLIENTNAME
 ```
 
 1. You will be asked for key to create user, create new key not the same as CA passphrase
+2. You will be asked to provide the CA key from earlier, provide to generate the key
 
 ```
 docker-compose run --rm openvpn ovpn_getclient $CLIENTNAME > $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
 ```
 
-### Connect
+### Connect Client To VPN Server
+
+Download the *.ovpn client files you generated earlier and share them with all of the user(s). The users can use any regular OpenVPN client for Windows, MacOS, Linux, Android, iOS, etc.
+
+Import the *.ovpn file into the client software of your choice and connect with the file and password provided when generating the file.
+
+Connect to the VPN.
+
+### Connect To Samba File Share
+
+Windows and MacOS provide built-in mechanisms for connecting to Samba file shares. Linux, iOS, and Android will require an app and/or additional configuration but should work fine as well. 
+
+#### Credentials
 
 Host: `\\172.28.28.28\vault`
-Username <type anything>
+Username guest (or any username really)
 Password <empty>
 
+### Disconnect
+
+The VPN currently sends all traffic over it so disconnect after using the Samba file share in order to resume normal Internet activities.
+
 ## Reference
+
+* https://github.com/kylemanna/docker-openvpn
 
 * http://manpages.ubuntu.com/manpages/xenial/man5/smb.conf.5.html
 
