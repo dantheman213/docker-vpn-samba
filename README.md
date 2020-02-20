@@ -1,12 +1,16 @@
 # docker-vpn-samba
 
-Turn-key Samba (SMB) file share and VPN
+Turn-key Samba (SMB) file share and VPN. Setup a secure file share behind VPN in minutes. 
+
+## How It Works
+
+Docker and Compose are leveraged to quickly standup a VPN and Samba (SMB) server that is lightweight, portable, and powerful. The Samba server can only be accessed once you're logged onto the VPN. Set this up on many cloud providers like AWS, GCP, Azure, DigitalOcean, Linode, etc or your home or business network to quickly and securely share files of nearly any size with nearly any amount of users, the limit is what your hardware can provide.
 
 ## Getting Started
 
-Setup a secure file share behind VPN in minutes. Example below is a fresh Ubuntu 18.04 LTS server in the cloud.
+Example below is a fresh Ubuntu 18.04 LTS server in the cloud.
 
-### Prereq
+### Prerequisites
 
 ```
 apt-get update
@@ -22,7 +26,7 @@ git clone https://github.com/dantheman213/docker-vpn-samba
 cd docker-vpn-samba
 ```
 
-### Setup
+### Configure Server Variables
 
 Set these values custom to your preference on your new server.
 
@@ -56,7 +60,9 @@ docker-compose run --rm openvpn ovpn_initpki
 docker-compose up --build -d
 ```
 
-### Configure Authentication
+### Add Users To VPN
+
+Setup the VPN credential directory:
 
 ```
 [ ! -d $DVS_LOCAL_VPN_CREDS_PATH ] && mkdir -p $DVS_LOCAL_VPN_CREDS_PATH
@@ -78,16 +84,23 @@ sed -i '/redirect-gateway def1/d' $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ov
 echo "route-nopull" >> $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
 echo "route 172.28.28.28 255.255.255.255" >> $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
 ```
+#### Download Credentials
 
-### Connect Client To VPN Server
+Access the files here and download them to distribute to your intended users:
 
-Download the *.ovpn client files you generated earlier and share them with all of the user(s). The users can use any regular OpenVPN client for Windows, MacOS, Linux, Android, iOS, etc.
+```
+cd $DVS_LOCAL_VPN_CREDS_PATH
+```
 
-Import the *.ovpn file into the client software of your choice and connect with the file and password provided when generating the file.
+### Connect To VPN Server
 
-Connect to the VPN.
+Users can download and run any common OpenVPN client for Windows, MacOS, Linux, Android, iOS, etc.
 
-### Connect To Samba File Share
+Import the *.ovpn file into the client software of your choice. Connect with the file and password from adding the user in a previous step.
+
+Have the user connect their client VPN to the server.
+
+### Connect To Samba File Share Inside VPN
 
 Windows and MacOS provide built-in mechanisms for connecting to Samba file shares. Linux, iOS, and Android will require an app and/or additional configuration but should work fine as well. 
 
@@ -97,7 +110,7 @@ Host: `\\172.28.28.28\vault`
 
 Username: guest (or any username really)
 
-Password: <empty>
+Password: `<empty>`
 
 ## Reference
 
