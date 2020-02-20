@@ -13,7 +13,7 @@ services:
       - ${DVS_LOCAL_VPN_CONFIG_PATH}:/etc/openvpn
     restart: always
 
-  docker-vpn-smb:
+  samba:
     container_name: samba
     build: .
     volumes:

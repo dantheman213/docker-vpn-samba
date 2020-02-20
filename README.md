@@ -1,4 +1,4 @@
-# docker-vpn-smb
+# docker-vpn-samba
 
 Turn-key Samba (SMB) file share and VPN
 
