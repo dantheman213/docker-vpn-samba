@@ -60,6 +60,14 @@ docker-compose run --rm openvpn ovpn_initpki
 docker-compose up --build -d
 ```
 
+#### Note
+
+If you have existing files in the share directory before this server was ever started, set the permissions to 777 so they can be writeable
+
+```
+chmod -Rv 777 $DVS_LOCAL_SHARE_PATH
+```
+
 ### Add Users To VPN
 
 Setup the VPN credential directory:
@@ -108,9 +116,7 @@ Windows and MacOS provide built-in mechanisms for connecting to Samba file share
 
 Host: `\\172.28.28.28\vault`
 
-Username: guest (or any username really)
-
-Password: `<empty>`
+The Samba share is configured to not ask for a username or password and you should not be prompted for one.
 
 ## Reference
 
