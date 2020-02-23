@@ -7,7 +7,8 @@ COPY image/etc/samba/smb.conf /etc/samba/smb.conf
 
 COPY image/usr/bin/run.sh /usr/bin/run.sh
 RUN groupadd samba && \
-    useradd -u samba -g samba -d /home/samba -s /bin/bash samba && \
+    useradd samba -g samba -s /usr/sbin/nologin && \
+    echo 'samba' | tee - | smbpasswd -s samba && \
     mkdir /samba && \
     chown samba:samba /samba && \
     chmod 777 /samba && \
