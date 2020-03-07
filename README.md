@@ -27,7 +27,7 @@ cd docker-vpn-samba
 ### Start Containers
 
 ```
-docker-compose up --build -d
+./start.sh
 ```
 
 ### Add Users To VPN
@@ -35,19 +35,12 @@ docker-compose up --build -d
 For every user (client) you want to give a certificate to run:
 
 ```
-export CLIENTNAME="bob.sampleton"
-docker-compose run --rm openvpn easyrsa build-client-full $CLIENTNAME
+./create-user.sh bob.sampleton
 ```
 
 1. You will be asked for key to create user, create new key not the same as CA passphrase
 2. You will be asked to provide the CA key from earlier, provide to generate the key
 
-```
-docker-compose run --rm openvpn ovpn_getclient $CLIENTNAME > $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
-sed -i '/redirect-gateway def1/d' $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
-echo "route-nopull" >> $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
-echo "route 172.28.28.28 255.255.255.255" >> $DVS_LOCAL_VPN_CREDS_PATH/$CLIENTNAME-vault.ovpn
-```
 #### Download Credentials
 
 Access the files here and download them to distribute to your intended users:

@@ -8,13 +8,13 @@ fi
 start=`date +%s`
 
 echo "Saving env vars..."
-mkdir -p /etc/openvpn/credentials
 echo "export DVS_LOCAL_VPN_CONFIG_PATH=/etc/openvpn" >> /etc/environment
 echo "export DVS_LOCAL_VPN_CREDS_PATH=/etc/vpn/credentials" >> /etc/environment
 echo "export DVS_LOCAL_SHARE_PATH=/samba" >> /etc/environment
 echo "export DVS_VPN_HOST=$1" >> /etc/environment
 source /etc/environment
 
+echo "Setup paths..."
 [ ! -d $DVS_LOCAL_SHARE_PATH ] && mkdir -p $DVS_LOCAL_SHARE_PATH
 chmod -R 777 $DVS_LOCAL_SHARE_PATH
 
