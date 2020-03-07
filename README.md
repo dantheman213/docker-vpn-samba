@@ -10,43 +10,12 @@ Docker and Compose are leveraged to quickly standup a VPN and Samba (SMB) server
 
 Example below is a fresh Ubuntu 18.04 LTS server in the cloud.
 
-### Prerequisites
+### Setup
 
 ```
-apt-get update
-apt-get upgrade -y
-apt-get install -y docker docker-compose
-
-ufw default deny incoming
-ufw allow 22
-ufw allow 1194/udp
-ufw enable
-
 git clone https://github.com/dantheman213/docker-vpn-samba
 cd docker-vpn-samba
-```
-
-### Configure Server Variables
-
-Set these values custom to your preference on your new server.
-
-```
-echo "export DVS_LOCAL_VPN_CONFIG_PATH=/etc/openvpn" >> /etc/environment
-echo "export DVS_LOCAL_VPN_CREDS_PATH=/etc/vpn/credentials" >> /etc/environment
-echo "export DVS_LOCAL_SHARE_PATH=/samba" >> /etc/environment
-echo "export DVS_VPN_HOST=vpn.mydomain.com" >> /etc/environment
-source /etc/environment
-```
-
-Now run this code one at a time to continue setup:
-
-```
-[ ! -d $DVS_LOCAL_SHARE_PATH ] && mkdir -p $DVS_LOCAL_SHARE_PATH
-chmod 777 $DVS_LOCAL_SHARE_PATH
-
-[ ! -d $DVS_LOCAL_VPN_CONFIG_PATH ] && mkdir -p $DVS_LOCAL_VPN_CONFIG_PATH
-docker-compose run --rm openvpn ovpn_genconfig -u udp://$DVS_VPN_HOST
-docker-compose run --rm openvpn ovpn_initpki
+./setup.sh vpn.mydomain.com
 ```
 
 1. Enter a passphrase, make sure it's a long secure string, and keep it safe
@@ -56,25 +25,12 @@ docker-compose run --rm openvpn ovpn_initpki
 3. Provide the passphrase from #1 in (2) prompts
 
 ### Start Containers
+
 ```
 docker-compose up --build -d
 ```
 
-#### Note
-
-If you have existing files in the share directory before this server was ever started, set the permissions to 777 so they can be writeable
-
-```
-chmod -Rv 777 $DVS_LOCAL_SHARE_PATH
-```
-
 ### Add Users To VPN
-
-Setup the VPN credential directory:
-
-```
-[ ! -d $DVS_LOCAL_VPN_CREDS_PATH ] && mkdir -p $DVS_LOCAL_VPN_CREDS_PATH
-```
 
 For every user (client) you want to give a certificate to run:
 
