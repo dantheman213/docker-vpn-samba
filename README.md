@@ -14,7 +14,7 @@ Example below is a fresh Ubuntu 18.04 LTS server in the cloud.
 
 ```
 git clone https://github.com/dantheman213/docker-vpn-samba
-cd docker-vpn-samba
+cd docker-vpn-samba/bin
 ./setup.sh vpn.mydomain.com
 ```
 
