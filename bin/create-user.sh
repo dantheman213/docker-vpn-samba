@@ -11,8 +11,8 @@ fi
 CLIENTNAME=$1
 OUTPUT_FILE=$OVPN_CONFIG_CREDS_PATH/$CLIENTNAME-vault.ovpn
 
-docker-compose run --rm openvpn easyrsa build-client-full $CLIENTNAME
-docker-compose run --rm openvpn ovpn_getclient $CLIENTNAME > $OUTPUT_FILE
+docker-compose -f ../docker/docker-compose.yml run --rm openvpn easyrsa build-client-full $CLIENTNAME
+docker-compose -f ../docker/docker-compose.yml run --rm openvpn ovpn_getclient $CLIENTNAME > $OUTPUT_FILE
 
 sed -i '/redirect-gateway def1/d' $OUTPUT_FILE
 echo "route-nopull" >> $OUTPUT_FILE
